@@ -10,13 +10,26 @@
     <div class="container">
         <h2>To-Do List</h2>
 
-        <div style="display: flex; gap: 10px; justify-content: center;">
+        <!-- Input Section -->
+        <div style="display:flex; gap:10px; justify-content:center;">
             <input type="text" id="taskInput" placeholder="Enter task">
             <button onclick="addTask()">Add</button>
         </div>
 
+        <!-- Message -->
         <p id="message"></p>
 
+        <!-- Counter -->
+        <p id="counter">Total: 0 | Completed: 0 | Pending: 0</p>
+
+        <!-- Clear Completed Button -->
+        <div style="text-align:center;">
+            <button onclick="clearCompleted()" style="background:#e67e22;">
+                Clear Completed
+            </button>
+        </div>
+
+        <!-- Task List -->
         <ul id="taskList"></ul>
     </div>
 

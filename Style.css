@@ -89,3 +89,8 @@ li {
 .delete {
     color: #e74c3c;
 }
+#counter {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}
