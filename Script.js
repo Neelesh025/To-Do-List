@@ -1,45 +1,78 @@
 let tasks = [];
+let currentFilter = "all";
+let currentSearch = "";
 
-// Load tasks on page load
+// Load saved tasks
 window.onload = function () {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-        tasks = JSON.parse(savedTasks);
+    const saved = localStorage.getItem("tasks");
+    if (saved) {
+        tasks = JSON.parse(saved);
     }
     renderTasks();
 };
 
-// Add task
 function addTask() {
     const input = document.getElementById("taskInput");
+    const dateInput = document.getElementById("dueDate");
     const text = input.value.trim();
-    const message = document.getElementById("message");
 
     if (text === "") {
         alert("Task cannot be empty");
         return;
     }
 
-    tasks.push({ text: text, completed: false });
+    tasks.push({
+        text: text,
+        completed: false,
+        dueDate: dateInput.value
+    });
+
     saveTasks();
     renderTasks();
 
-    message.textContent = "Task added successfully.";
+    document.getElementById("message").textContent =
+        "Task added successfully.";
+
     input.value = "";
+    dateInput.value = "";
 }
 
-// Render tasks
 function renderTasks() {
     const list = document.getElementById("taskList");
     list.innerHTML = "";
 
-    tasks.forEach((task, index) => {
+    let filtered = tasks;
+
+    // Apply filter
+    if (currentFilter === "completed") {
+        filtered = tasks.filter(t => t.completed);
+    } else if (currentFilter === "pending") {
+        filtered = tasks.filter(t => !t.completed);
+    }
+
+    // Apply search
+    if (currentSearch !== "") {
+        filtered = filtered.filter(t =>
+            t.text.toLowerCase().includes(currentSearch)
+        );
+    }
+
+    if (filtered.length === 0) {
+        list.innerHTML = "<p>No tasks found.</p>";
+        updateCounter();
+        return;
+    }
+
+    filtered.forEach((task) => {
         const li = document.createElement("li");
 
         const span = document.createElement("span");
-        span.textContent = task.text;
-        span.style.cursor = "pointer";
-        if (task.completed) span.classList.add("completed");
+        span.textContent =
+            task.text + (task.dueDate ? " (Due: " + task.dueDate + ")" : "");
+
+        if (task.completed) {
+            span.classList.add("completed");
+        }
 
         span.onclick = function () {
             task.completed = !task.completed;
@@ -47,20 +80,27 @@ function renderTasks() {
             renderTasks();
         };
 
-        // Edit button
         const editBtn = document.createElement("button");
         editBtn.innerHTML = "✏️";
         editBtn.className = "icon-btn";
         editBtn.onclick = function () {
-            editTask(index);
+            const newText = prompt("Edit task:", task.text);
+            if (newText && newText.trim() !== "") {
+                task.text = newText.trim();
+                document.getElementById("message").textContent =
+                    "Task updated successfully.";
+                saveTasks();
+                renderTasks();
+            } else {
+                alert("Task cannot be empty");
+            }
         };
 
-        // Delete button
         const deleteBtn = document.createElement("button");
         deleteBtn.innerHTML = "❌";
         deleteBtn.className = "icon-btn delete";
         deleteBtn.onclick = function () {
-            tasks.splice(index, 1);
+            tasks = tasks.filter(t => t !== task);
             saveTasks();
             renderTasks();
         };
@@ -68,34 +108,33 @@ function renderTasks() {
         li.appendChild(span);
         li.appendChild(editBtn);
         li.appendChild(deleteBtn);
+
         list.appendChild(li);
     });
 
     updateCounter();
 }
 
-// Edit task
-function editTask(index) {
-    const newText = prompt("Edit task:", tasks[index].text);
+function setFilter(filter) {
+    currentFilter = filter;
+    renderTasks();
+}
 
-    if (newText === null) return;
+function searchTasks() {
+    const input = document.getElementById("searchInput");
+    const value = input.value.trim();
 
-    if (newText.trim() === "") {
-        alert("Task cannot be empty");
+    if (value === "") {
+        alert("Search field cannot be empty");
         return;
     }
 
-    tasks[index].text = newText.trim();
-    saveTasks();
+    currentSearch = value.toLowerCase();
     renderTasks();
-
-    document.getElementById("message").textContent =
-        "Task updated successfully.";
 }
 
-// Clear completed tasks
 function clearCompleted() {
-    tasks = tasks.filter(task => !task.completed);
+    tasks = tasks.filter(t => !t.completed);
     saveTasks();
     renderTasks();
 
@@ -103,7 +142,6 @@ function clearCompleted() {
         "Completed tasks cleared.";
 }
 
-// Counter
 function updateCounter() {
     const total = tasks.length;
     const completed = tasks.filter(t => t.completed).length;
@@ -113,7 +151,6 @@ function updateCounter() {
         `Total: ${total} | Completed: ${completed} | Pending: ${pending}`;
 }
 
-// Save to localStorage
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }

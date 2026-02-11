@@ -3,41 +3,46 @@ body {
     background-color: #f4f6f8;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    padding-top: 40px;
 }
 
-/* Card container */
 .container {
-    background-color: #ffffff;
+    background: white;
     padding: 30px;
-    width: 350px;
+    width: 450px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Heading */
 h2 {
     text-align: center;
-    color: #2c3e50;
+    margin-bottom: 20px;
 }
 
-/* Input */
-input[type="text"] {
-    padding: 10px;
-    width: 65%;
-    border: 1px solid #ccc;
+.input-section,
+.search-section,
+.filter-section {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+input[type="text"],
+input[type="date"] {
+    padding: 8px;
     border-radius: 5px;
-    outline: none;
+    border: 1px solid #ccc;
+    width: 160px;
 }
 
-/* Add button */
 button {
-    padding: 10px 12px;
+    padding: 8px 14px;
+    border-radius: 5px;
+    border: none;
     background-color: #3498db;
     color: white;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -45,24 +50,31 @@ button:hover {
     background-color: #2980b9;
 }
 
-/* Message */
+.clear-btn {
+    background-color: #e67e22;
+    display: block;
+    margin: 10px auto;
+}
+
 #message {
+    text-align: center;
     color: green;
-    margin-top: 10px;
+    font-weight: bold;
+}
+
+#counter {
     text-align: center;
     font-weight: bold;
 }
 
-/* Task list */
 ul {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
-/* Task item */
 li {
-    background-color: #f9f9f9;
+    background: #f9f9f9;
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 5px;
@@ -71,13 +83,11 @@ li {
     align-items: center;
 }
 
-/* Completed task */
 .completed {
     text-decoration: line-through;
     color: gray;
 }
 
-/* Icon buttons */
 .icon-btn {
     background: none;
     border: none;
@@ -85,12 +95,6 @@ li {
     cursor: pointer;
 }
 
-/* Delete icon */
 .delete {
-    color: #e74c3c;
-}
-#counter {
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: center;
+    color: red;
 }
