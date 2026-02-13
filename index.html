@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>TO-DO LIST SYSTEM</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -9,22 +8,48 @@
 
 <div class="container">
     <h1>TO-DO LIST SYSTEM</h1>
-    <h3>Task Application</h3>
+    <h3>Final Task Application</h3>
 
-    <input type="text" id="searchInput" placeholder="Search by task number (1,2,3)">
-    <button onclick="searchTasks()">Search</button>
+    <!-- Add Task -->
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <input type="date" id="dueDate">
 
-    <div id="taskContainer"></div>
+    <select id="priority">
+        <option value="">Select Priority</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+    </select>
+
+    <button onclick="addTask()">Add Task</button>
+
+    <!-- Search -->
+    <input type="text" id="searchInput" placeholder="Search tasks">
+    <button onclick="searchTask()">Search</button>
+
+    <!-- Filters -->
+    <div class="filters">
+        <button onclick="filterTasks('all')">All</button>
+        <button onclick="filterTasks('completed')">Completed</button>
+        <button onclick="filterTasks('pending')">Pending</button>
+    </div>
+
+    <!-- Export -->
+    <button class="export-btn" onclick="exportTasks()">Export Tasks</button>
+
+    <p id="message"></p>
+
+    <ul id="taskList"></ul>
 
     <button class="remove-btn" onclick="clearCompleted()">Remove Completed Tasks</button>
 
-    <hr>
-
+    <!-- Counter -->
     <div class="summary">
-        <p><strong>Total Tasks:</strong> <span id="total">0</span></p>
-        <p><strong>Completed Tasks:</strong> <span id="completed">0</span></p>
-        <p><strong>Pending Tasks:</strong> <span id="pending">0</span></p>
+        <p>Total Tasks: <span id="total">0</span></p>
+        <p>Completed Tasks: <span id="completed">0</span></p>
+        <p>Pending Tasks: <span id="pending">0</span></p>
     </div>
+
 </div>
 
 <script src="script.js"></script>
